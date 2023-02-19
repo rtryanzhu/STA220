@@ -11,11 +11,15 @@ import requests as req
 import time
 import re
 import requests
+
 from tqdm import tqdm 
 from bs4 import BeautifulSoup
 from urllib.parse import urljoin
-starter_url = 'https://en.wikipedia.org/wiki/Special:Random'
 from tqdm.notebook import tqdm_notebook
+from collections import Counter
+from itertools import chain
+
+starter_url = 'https://en.wikipedia.org/wiki/Special:Random'
 
 # Scrape the page
 def get_html(keyword):
@@ -158,3 +162,13 @@ def play(starter_list, stop_word, max_iteration):
         output_df.loc[len(output_df.index)]=[starter,counter,history,inf_indicator] # record the result
         
     return output_df
+
+# Analysis part
+# Get the result of 200 games
+output = play(slist,'Philosophy',1000) 
+
+# Get the frequency table of articles visited
+result = Counter([elem for elem in chain.from_iterable(output['History'].values)])
+df = pd.DataFrame.from_dict(result, orient='index').reset_index()
+df.columns = ['Visit','Counter']
+df.sort_values('Counter',ascending=False)
