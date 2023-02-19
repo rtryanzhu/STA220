@@ -4,7 +4,7 @@
 # 3.Game stops when no qualified link is available or it reaches max iteration number
 
 # Performance
-# Runtime was 
+# Runtime was about 14min
 
 import pandas as pd
 import requests as req
